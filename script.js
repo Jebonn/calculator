@@ -1,3 +1,7 @@
+function display(toDisplay) {
+    numbersDisplay.value = toDisplay;
+}
+
 function add(a, b) {
     return a + b;
 }
@@ -17,37 +21,52 @@ function divide(a, b) {
 function operate(operation, a, b) {
     switch (operation) {
         case "+":
-            return add(a, b);
+            display(add(a, b));
+            break;
         case "-":
-            return subtract(a, b);
+            display(subtract(a, b));
+            break;
         case "x":
-            return multiply(a, b);
+            display(multiply(a, b));
+            break;
         case "/":
-            return divide(a, b);
+            display(divide(a, b));
+            break;
     }
 }
 
 function clear() {
-    numbersDisplay.value = '';
+    display('');
+}
+
+function pi() {
+    display(Math.PI);
 }
 
 function entry() {
-    numbersDisplay.value += this.textContent;
+    display(numbersDisplay.value + this.textContent);
 }
 
-function highlight(button) {
+// Iterates through operationButtons NodeList
+// Highlights the arithmatic button that was pressed
+// Removes highlight from button not pressed
+function highlight() {
     operationButtons.forEach(operation => {
-        if (button != operation) {
+        if (currentOperation != operation.textContent) {
             operation.style = "box-shadow: none;";
-        } else if (button == operation) {
-            button.style = "box-shadow: 0px 0px 1px 2px blue;";
+        } else if (currentOperation == operation.textContent) {
+            operation.style = "box-shadow: 0px 0px 1px 2px blue;";
         }
     })
 }
 
+let previousNum;
+let currentOperation = '';
+
 const numbersDisplay = document.querySelector("#numbers-display");
 const clearButton = document.querySelector("#clear-entry");
 const equalButton = document.querySelector("#equal");
+const piButton = document.querySelector("#pi");
 const numberButtons = document.querySelectorAll(".number");
 const operationButtons = document.querySelectorAll(".operation");
 
@@ -55,15 +74,18 @@ numberButtons.forEach(number => {
     number.addEventListener('click', entry);
 })
 
-operationButtons.forEach(operation => {
-    operation.addEventListener('click', () => {
-        highlight(operation); // highlights current operation button
+operationButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        currentOperation = button.textContent;
+        highlight(); // highlights current operation button
     })
 })
 
 equalButton.addEventListener('click', () => {
-    highlight(equalButton); // removes highlight from operation buttons
+    currentOperation = '';
+    highlight(); // removes highlight from operation buttons
 })
 
 clearButton.addEventListener('click', clear);
+piButton.addEventListener('click', pi);
 

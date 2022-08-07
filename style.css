@@ -23,7 +23,7 @@ button {
 }
 
 #numbers-display {
-    font-size: x-large;
+    font-size: 40px;
     margin-bottom: 4px;
     text-align: right;
     width: 100%;
