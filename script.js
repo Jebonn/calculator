@@ -19,6 +19,8 @@ function divide(a, b) {
 }
 
 function operate(operation, a, b) {
+    a = +a;
+    b = +b;
     switch (operation) {
         case "+":
             display(add(a, b));
@@ -43,12 +45,20 @@ function pi() {
     display(Math.PI.toFixed(15));
 }
 
+// Adds pressed number to the display
+// Clears screen if one of the +-x/ buttons have been pressed
+// Then sets gettingSecondNum back to false
 function entry() {
+    if (gettingSecondNum) {
+        gettingSecondNum = false;
+        clear();
+    }
     if (numbersDisplay.value.length <= 16) {
         display(numbersDisplay.value + this.textContent);
     }
 }
 
+// Adds a decimal point if there isn't one. Otherwise do nothing.
 function decimalEntry() {
     if (!numbersDisplay.value.includes(".")) {
         display(numbersDisplay.value + this.textContent);
@@ -68,18 +78,20 @@ function highlight() {
     })
 }
 
-let previousNum;
-let currentOperation = '';
+let currentOperation;           // Records current arithmatic operation
+let gettingSecondNum = false;   // True after pressing one of the +-x/ buttons
+let previousNum;                // Records previous numbers in display
 
+// QUERY SELECTORS
 const numbersDisplay = document.querySelector("#numbers-display");
 const clearButton = document.querySelector("#clear-entry");
 const equalButton = document.querySelector("#equal");
 const piButton = document.querySelector("#pi");
 const decimalButton = document.querySelector("#decimal");
-
 const numberButtons = document.querySelectorAll(".number");
 const operationButtons = document.querySelectorAll(".operation");
 
+// EVENT LISTENERS
 numberButtons.forEach(number => {
     number.addEventListener('click', entry);
 })
@@ -87,13 +99,17 @@ numberButtons.forEach(number => {
 operationButtons.forEach(button => {
     button.addEventListener('click', () => {
         currentOperation = button.textContent;
+        gettingSecondNum = true; 
+        previousNum = numbersDisplay.value;
         highlight(); // highlights current operation button
     })
 })
 
 equalButton.addEventListener('click', () => {
+    operate(currentOperation, previousNum, numbersDisplay.value);
     currentOperation = '';
     highlight(); // removes highlight from operation buttons
+
 })
 
 clearButton.addEventListener('click', clear);
