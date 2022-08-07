@@ -26,3 +26,21 @@ function operate(operation, a, b) {
             return divide(a, b);
     }
 }
+
+function clear() {
+    numbersDisplay.value = '';
+}
+
+function entry() {
+    numbersDisplay.value += this.textContent;
+}
+
+const numbersDisplay = document.querySelector("#numbers-display");
+
+const clearButton = document.querySelector("#clear-entry");
+clearButton.addEventListener('click', clear);
+
+const numberButtons = document.querySelectorAll(".number");
+numberButtons.forEach(number => {
+    number.addEventListener('click', entry);
+})
