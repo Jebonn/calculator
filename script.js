@@ -40,11 +40,19 @@ function clear() {
 }
 
 function pi() {
-    display(Math.PI);
+    display(Math.PI.toFixed(15));
 }
 
 function entry() {
-    display(numbersDisplay.value + this.textContent);
+    if (numbersDisplay.value.length <= 16) {
+        display(numbersDisplay.value + this.textContent);
+    }
+}
+
+function decimalEntry() {
+    if (!numbersDisplay.value.includes(".")) {
+        display(numbersDisplay.value + this.textContent);
+    }
 }
 
 // Iterates through operationButtons NodeList
@@ -67,6 +75,8 @@ const numbersDisplay = document.querySelector("#numbers-display");
 const clearButton = document.querySelector("#clear-entry");
 const equalButton = document.querySelector("#equal");
 const piButton = document.querySelector("#pi");
+const decimalButton = document.querySelector("#decimal");
+
 const numberButtons = document.querySelectorAll(".number");
 const operationButtons = document.querySelectorAll(".operation");
 
@@ -88,4 +98,5 @@ equalButton.addEventListener('click', () => {
 
 clearButton.addEventListener('click', clear);
 piButton.addEventListener('click', pi);
+decimalButton.addEventListener('click', decimalEntry);
 
